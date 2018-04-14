@@ -1,4 +1,4 @@
-# 00. Web Scraping (Python 3.6.4., BeautifulSoup)
+# 00. Clint Eastwood Web Scraping (Python 3.6.4., BeautifulSoup)
 
 Instructions:
 
