@@ -1,9 +1,9 @@
-from .app import start_app
+from Controller.app import start_app
+
 
 def main():
-    pass
+    start_app()
 
 
-
-if "name" == "__main__":
+if __name__ == "__main__":
     main()
