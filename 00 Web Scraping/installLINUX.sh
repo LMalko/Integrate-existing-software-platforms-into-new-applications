@@ -1,0 +1,1 @@
+sudo python -m pip install bs4
