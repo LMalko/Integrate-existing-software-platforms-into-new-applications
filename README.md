@@ -5,5 +5,4 @@ Instructions:
 
 
 1. bash install.sh
-
 2. run main.py
