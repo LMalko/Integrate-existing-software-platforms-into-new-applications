@@ -1,8 +1,8 @@
-from Controller.app import *
+from Controller.AppController import *
 
 
 def main():
-    start_app()
+    app = AppController()
 
 
 if __name__ == "__main__":
