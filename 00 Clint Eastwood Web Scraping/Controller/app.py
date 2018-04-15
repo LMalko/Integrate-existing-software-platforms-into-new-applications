@@ -14,7 +14,11 @@ def start_app():
     soup = BeautifulSoup(response.text, "html.parser")
     films = get_films(soup)
     for film in films:
-            print(film.find("a").get_text())
+        title = film.find("a").text
+        character = film.find("b").next_sibling.next_sibling.next_sibling
+        release_form = film.find( "b" ).next_sibling
+        release_year = film.find("span").text
+
 
 
 
