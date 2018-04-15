@@ -23,7 +23,7 @@ class AppController:
         for movie in movies:
             temp_movie = self.set_movie_object(movie)
             self.movie_collection.append(temp_movie)
-            
+
     @staticmethod
     def get_movies(soup):
         return soup.findAll('div', id=lambda x: x and x.startswith('actor-'))
@@ -38,7 +38,10 @@ class AppController:
     @staticmethod
     def set_movie_object(movie):
         title = movie.find("a").text
-        character = movie.find("b").next_sibling.next_sibling.next_sibling.split("\n")[1]
+        try:
+            character = movie.find("b").next_sibling.next_sibling.next_sibling.split("\n")[1]
+        except AttributeError:
+            character = "Unspecified"
         category = movie.find( "b" ).next_sibling
 
         if category == "\n":
