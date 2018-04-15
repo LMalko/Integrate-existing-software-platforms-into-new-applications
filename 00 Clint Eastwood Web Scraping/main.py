@@ -1,4 +1,4 @@
-from Controller.app import start_app
+from Controller.app import *
 
 
 def main():
