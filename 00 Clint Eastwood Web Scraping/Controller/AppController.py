@@ -11,6 +11,9 @@ class AppController:
         response = self.check_url_response(link)
         soup = BeautifulSoup(response.text, "html.parser")
         self.set_movies_collection(soup)
+
+        self.actors_name = self._set_actors_name(soup)
+
         self.write_collection_to_csv_file(self.movie_collection)
 
     @staticmethod
@@ -29,7 +32,7 @@ class AppController:
         return soup.findAll('div', id=lambda x: x and x.startswith('actor-'))
 
     def write_collection_to_csv_file(self, collection):
-        with open("yourActorsMovies.csv", "w", encoding="utf-8", newline='') as file:
+        with open(f"{self.get_actors_name()} Movies.csv", "w", encoding="utf-8", newline='') as file:
             csv_writer = writer(file)
             csv_writer.writerow(["Title", "Character", "Year", "Category"])
             for item in collection:
@@ -51,4 +54,11 @@ class AppController:
 
         release_year = movie.find("span").text.split("\n")[1]
         return Movie(title, character, category, release_year)
+
+    def _set_actors_name(self, soup):
+        self.actors_name = soup.findAll("span", itemprop="name")
+        return self.actors_name[0].text
+
+    def get_actors_name(self):
+        return self.actors_name
 
