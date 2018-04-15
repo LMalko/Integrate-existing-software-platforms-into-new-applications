@@ -2,8 +2,8 @@ from Controller.AppController import *
 
 
 def main():
-    clint_eastwood_IMBD_home = "https://www.imdb.com/name/nm0000142/"
-    app = AppController(clint_eastwood_IMBD_home)
+    actor_IMBD_home = "http://www.imdb.com/name/nm0000126/?ref_=tt_ov_st_sm".split("?")[0]
+    app = AppController(actor_IMBD_home)
 
 
 if __name__ == "__main__":

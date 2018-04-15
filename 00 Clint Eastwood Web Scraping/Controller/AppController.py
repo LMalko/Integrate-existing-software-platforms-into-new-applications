@@ -11,6 +11,14 @@ class AppController:
         response = self.check_url_response(link)
         soup = BeautifulSoup(response.text, "html.parser")
         self.set_movies_collection(soup)
+        self.write_collection_to_csv_file(self.movie_collection)
+
+    def write_collection_to_csv_file(self, collection):
+        with open("yourActorsMovies.csv", "w", encoding="utf-8", newline='') as file:
+            csv_writer = writer(file)
+            csv_writer.writerow(["Title", "Character", "Year", "Category"])
+            for item in collection:
+                csv_writer.writerow([item.title, item.character_played, item.release_year, item.category])
 
 
     def set_movies_collection(self, soup):
