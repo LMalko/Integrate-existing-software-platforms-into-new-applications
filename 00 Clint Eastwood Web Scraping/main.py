@@ -1,8 +1,12 @@
 from Controller.AppController import *
+from sys import argv
 
 
 def main():
-    actor_IMBD_home = "http://www.imdb.com/name/nm0000126/?ref_=tt_ov_st_sm".split("?")[0]
+    try:
+        actor_IMBD_home = argv[1].split ( "?" )[0]
+    except IndexError:
+        actor_IMBD_home = "http://www.imdb.com/name/nm0000142/?ref_=nv_sr_1".split("?")[0]
     app = AppController(actor_IMBD_home)
 
 
