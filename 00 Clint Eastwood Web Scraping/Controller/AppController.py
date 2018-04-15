@@ -7,22 +7,21 @@ class AppController:
 
     movie_collection = []
 
-    def __init__(self):
-        response = self.check_url_response()
+    def __init__(self, link):
+        response = self.check_url_response(link)
         soup = BeautifulSoup(response.text, "html.parser")
         self.set_movies_collection(soup)
-        # for i in self.movie_collection:
-        #     print(i)
+
 
     def set_movies_collection(self, soup):
-        movies = self.get_movies ( soup )
+        movies = self.get_movies(soup)
         for movie in movies:
             temp_movie = self.set_movie_object(movie)
             self.movie_collection.append(temp_movie)
 
     @staticmethod
-    def check_url_response():
-        response = requests.get ( "https://www.imdb.com/name/nm0000142/" )
+    def check_url_response(link):
+        response = requests.get(link)
         return response
 
     @staticmethod
