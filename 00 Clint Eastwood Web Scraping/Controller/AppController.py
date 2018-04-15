@@ -13,28 +13,27 @@ class AppController:
         self.set_movies_collection(soup)
         self.write_collection_to_csv_file(self.movie_collection)
 
-    def write_collection_to_csv_file(self, collection):
-        with open("yourActorsMovies.csv", "w", encoding="utf-8", newline='') as file:
-            csv_writer = writer(file)
-            csv_writer.writerow(["Title", "Character", "Year", "Category"])
-            for item in collection:
-                csv_writer.writerow([item.title, item.character_played, item.release_year, item.category])
-
+    @staticmethod
+    def check_url_response(link):
+        response = requests.get(link)
+        return response
 
     def set_movies_collection(self, soup):
         movies = self.get_movies(soup)
         for movie in movies:
             temp_movie = self.set_movie_object(movie)
             self.movie_collection.append(temp_movie)
-
-    @staticmethod
-    def check_url_response(link):
-        response = requests.get(link)
-        return response
-
+            
     @staticmethod
     def get_movies(soup):
         return soup.findAll('div', id=lambda x: x and x.startswith('actor-'))
+
+    def write_collection_to_csv_file(self, collection):
+        with open("yourActorsMovies.csv", "w", encoding="utf-8", newline='') as file:
+            csv_writer = writer(file)
+            csv_writer.writerow(["Title", "Character", "Year", "Category"])
+            for item in collection:
+                csv_writer.writerow([item.title, item.character_played, item.release_year, item.category])
 
     @staticmethod
     def set_movie_object(movie):
