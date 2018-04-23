@@ -8,19 +8,22 @@ class AppController:
     movie_collection = []
 
     def __init__(self, link):
-        self.response = self.check_url_response(link)
-        soup = BeautifulSoup(self.response.text, "html.parser")
-        self._set_movies_collection(soup)
+        self.response = self.set_url_response(link)
+        self.soup = BeautifulSoup(self.response.text, "html.parser")
 
-        self.actors_name = self._set_actors_name(soup)
-
-        self._write_collection_to_csv_file(self.movie_collection)
 
     @staticmethod
-    def check_url_response(link):
+    def set_url_response(link):
         response = requests.get(link)
-        print(response)
         return response
+
+    def get_response(self):
+        return self.response
+
+    def run_app(self):
+        self._set_movies_collection(self.soup)
+        self.actors_name = self._set_actors_name(self.soup)
+        self._write_collection_to_csv_file(self.movie_collection)
 
     def _set_movies_collection(self, soup):
         movies = self._get_movies(soup)
