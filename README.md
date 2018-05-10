@@ -1,4 +1,4 @@
-# 01. Twitter OUth (Python 3.6.4.)
+# 01. Twitter OAuth (Python 3.6.4.)
 
 # 00. Clint Eastwood Web Scraping (Python 3.6.4., BeautifulSoup)
 
