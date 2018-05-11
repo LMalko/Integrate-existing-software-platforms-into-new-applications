@@ -18,3 +18,6 @@ class Login:
 
     def get_content(self):
         return self.content
+
+    def get_consumer(self):
+        return self.consumer
