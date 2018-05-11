@@ -15,6 +15,16 @@ class App:
 
         authorized_client = self.authorize_client()
 
+        print(authorized_client)
+
+        # Make Twitter API calls.
+        response, content = authorized_client.request(
+            "https://api.twitter.com/1.1/search/tweets.json?q=computers+filter:images", "GET")
+
+        self.check_response_status(response)
+
+        self.view.display_message(content.decode("utf-8"))
+
 
 
 
@@ -25,8 +35,7 @@ class App:
 
         response, content = self.login.get_request(client)
 
-        if self.login.get_response_status(response) != 200:
-            self.view.display_message("An error occured")
+        self.check_response_status(response)
 
         request_token = self.login.get_request_token(content)
 
@@ -51,6 +60,10 @@ class App:
         authorization_verifier = self.view.get_user_input("What is the PIN? --> ")
 
         return authorization_verifier
+
+    def check_response_status(self, response):
+        if self.login.get_response_status(response) != 200:
+            self.view.display_message("An error occured")
 
 
 
