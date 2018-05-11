@@ -59,3 +59,18 @@ class Login:
         access_token = dict(urlparse.parse_qsl(content.decode("utf-8")))
 
         return access_token
+
+    @staticmethod
+    def get_authorized_token(access_token):
+
+        # Create an 'authorized_token object and use that to
+        # perform Twitter API calls
+        # This authorized token will represent the user that authorized the application.
+        authorized_token = oauth2.Token(access_token['oauth_token'],
+                                        access_token['oauth_token_secret'])
+        return authorized_token
+
+    @staticmethod
+    def get_authorized_client(consumer, authorized_token):
+        authorized_client = oauth2.Client(consumer, authorized_token)
+        return authorized_client

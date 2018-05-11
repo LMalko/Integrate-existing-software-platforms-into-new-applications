@@ -1,8 +1,10 @@
 class View:
 
-    def display_message(self, message):
+    @staticmethod
+    def display_message(message):
         print(message)
 
-    def get_user_input(self, message):
+    @staticmethod
+    def get_user_input(message):
         message = '\n' + message
         return input(message)

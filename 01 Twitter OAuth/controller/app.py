@@ -3,7 +3,6 @@ sys.path.append("..")
 from view.view import View
 from controller.login import Login
 from enums.constants import Constants
-import urllib.parse as urlparse
 
 
 class App:
@@ -14,14 +13,29 @@ class App:
 
     def start_app(self):
 
+        authorized_client = self.authorize_client()
+
+        print(authorized_client)
+
+        # Make Twitter API calls.
+        response, content = authorized_client.request(
+            "https://api.twitter.com/1.1/search/tweets.json?q=computers+filter:images", "GET")
+
+        self.check_response_status(response)
+
+        self.view.display_message(content.decode("utf-8"))
+
+
+
+
+    def authorize_client(self):
         consumer = self.login.get_consumer()
 
         client = self.login.get_client(consumer)
 
         response, content = self.login.get_request(client)
 
-        if self.login.get_response_status(response) != 200:
-            self.view.display_message("An error occured")
+        self.check_response_status(response)
 
         request_token = self.login.get_request_token(content)
 
@@ -30,7 +44,12 @@ class App:
         client = self.login.get_verified_client(consumer, request_token, authorization_verifier)
 
         access_token = self.login.get_access_token(client)
-        print(access_token)
+
+        authorized_token = self.login.get_authorized_token(access_token)
+
+        authorized_client = self.login.get_authorized_client(consumer, authorized_token)
+
+        return authorized_client
 
     def get_authorization_verifier(self, request_token):
         # Ask the user to authorize app and give the pin code.
@@ -41,6 +60,10 @@ class App:
         authorization_verifier = self.view.get_user_input("What is the PIN? --> ")
 
         return authorization_verifier
+
+    def check_response_status(self, response):
+        if self.login.get_response_status(response) != 200:
+            self.view.display_message("An error occured")
 
 
 
