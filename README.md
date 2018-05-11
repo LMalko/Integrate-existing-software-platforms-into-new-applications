@@ -1,4 +1,4 @@
-# 01. Twitter OAuth (Python 3.6.4., requests, oauth2)
+# 01. Twitter OAuth (Python 3.6.4., json, requests, oauth2)
 
 Twitter API console application.
 
