@@ -1,4 +1,5 @@
 import sys
+import json
 sys.path.append("..")
 from view.view import View
 from controller.login import Login
@@ -15,7 +16,6 @@ class App:
 
         authorized_client = self.authorize_client()
 
-        print(authorized_client)
 
         # Make Twitter API calls.
         response, content = authorized_client.request(
@@ -23,7 +23,11 @@ class App:
 
         self.check_response_status(response)
 
+        # Convert bytes to string & display.
         self.view.display_message(content.decode("utf-8"))
+
+        # String representation
+        tweets = json.loads(content.decode("utf-8"))
 
 
 
