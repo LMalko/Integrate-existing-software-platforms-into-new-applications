@@ -3,7 +3,6 @@ sys.path.append("..")
 from view.view import View
 from controller.login import Login
 from enums.constants import Constants
-import urllib.parse as urlparse
 
 
 class App:
@@ -14,6 +13,12 @@ class App:
 
     def start_app(self):
 
+        authorized_client = self.authorize_client()
+
+
+
+
+    def authorize_client(self):
         consumer = self.login.get_consumer()
 
         client = self.login.get_client(consumer)
@@ -30,7 +35,12 @@ class App:
         client = self.login.get_verified_client(consumer, request_token, authorization_verifier)
 
         access_token = self.login.get_access_token(client)
-        print(access_token)
+
+        authorized_token = self.login.get_authorized_token(access_token)
+
+        authorized_client = self.login.get_authorized_client(consumer, authorized_token)
+
+        return authorized_client
 
     def get_authorization_verifier(self, request_token):
         # Ask the user to authorize app and give the pin code.
