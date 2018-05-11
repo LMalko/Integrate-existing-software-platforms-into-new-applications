@@ -21,4 +21,4 @@ class App:
         self.view.display_message(
             f"{Constants.AUTHORIZATION_URL.value}?oauth_token={request_token['oauth_token']}")
 
-        authentication_verifier = self.view.get_user_input("What is the PIN?")
+        authorization_verifier = self.view.get_user_input("What is the PIN?")
