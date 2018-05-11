@@ -2,7 +2,6 @@
 
 Twitter API console application.
 
-Twitter account: code_wars, codewars123
 
 # 00. Clint Eastwood Web Scraping (Python 3.6.4., BeautifulSoup)
 
