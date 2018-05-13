@@ -19,17 +19,18 @@ class App:
 
         # Make Twitter API calls.
         response, content = authorized_client.request(
-            "https://api.twitter.com/1.1/search/tweets.json?q=computers+filter:images", "GET")
+            "https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi", "GET")
 
         self.check_response_status(response)
 
-        # Convert bytes to string & display.
-        self.view.display_message(content.decode("utf-8"))
-
-        # String representation
+        # Convert bytes to string & display first. Then get string representation.
         tweets = json.loads(content.decode("utf-8"))
 
-
+        for tweet in tweets["statuses"]:
+            try:
+                print(tweet["text"])
+            except UnicodeEncodeError:
+                print(UnicodeEncodeError)
 
 
     def authorize_client(self):
