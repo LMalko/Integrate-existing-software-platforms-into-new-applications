@@ -78,7 +78,7 @@ class App:
         last_name = view.get_user_input ( "Last name --> " )
         email = view.get_user_input ( "email --> " )
 
-        return User(first_name, last_name, email,
+        return User(None, first_name, last_name, email,
                     authorized_token["oauth_token"], authorized_token["oauth_token_secret"])
 
 
