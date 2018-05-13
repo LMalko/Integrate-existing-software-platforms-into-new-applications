@@ -4,12 +4,17 @@ sys.path.append("..")
 from view.view import View
 from controller.login import Login
 from enums.constants import Constants
+from model.user import User
+from model.database import Database
 
 
 class App:
 
     view = View()
     login = Login()
+
+    def initialize_database(self, **kwargs):
+        Database().initialize(**kwargs)
 
 
     def start_app(self):
@@ -19,17 +24,18 @@ class App:
 
         # Make Twitter API calls.
         response, content = authorized_client.request(
-            "https://api.twitter.com/1.1/search/tweets.json?q=computers+filter:images", "GET")
+            "https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi", "GET")
 
         self.check_response_status(response)
 
-        # Convert bytes to string & display.
-        self.view.display_message(content.decode("utf-8"))
-
-        # String representation
+        # Convert bytes to string & display first. Then get string representation.
         tweets = json.loads(content.decode("utf-8"))
 
-
+        for tweet in tweets["statuses"]:
+            try:
+                print(tweet["text"])
+            except UnicodeEncodeError:
+                print(UnicodeEncodeError)
 
 
     def authorize_client(self):
@@ -48,6 +54,10 @@ class App:
         client = self.login.get_verified_client(consumer, request_token, authorization_verifier)
 
         access_token = self.login.get_access_token(client)
+
+        user = self.create_user(access_token)
+
+        user.save_to_db()
 
         authorized_token = self.login.get_authorized_token(access_token)
 
@@ -68,6 +78,14 @@ class App:
     def check_response_status(self, response):
         if self.login.get_response_status(response) != 200:
             self.view.display_message("An error occured")
+
+    def create_user(self, access_token):
+        first_name = self.view.get_user_input("First name --> ")
+        last_name = self.view.get_user_input ( "Last name --> " )
+        email = self.view.get_user_input ( "email --> " )
+
+        return User(None, first_name, last_name, email,
+                    access_token["oauth_token"], access_token["oauth_token_secret"])
 
 
 
