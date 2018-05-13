@@ -16,7 +16,7 @@ class CursorFromConnectionFromPool:
         # 3 exception parameters allow us to deal with exceptions if error in sql.
         if exception_value is not None:
             # If error -> rollback
-            self__connection.rollback()
+            self.__connection.rollback()
         else:
             self.__cursor.close()
             self.__connection.commit()
