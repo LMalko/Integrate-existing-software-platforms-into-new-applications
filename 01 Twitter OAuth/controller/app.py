@@ -4,6 +4,7 @@ sys.path.append("..")
 from view.view import View
 from controller.login import Login
 from enums.constants import Constants
+from model.user import User
 
 
 class App:
@@ -52,6 +53,8 @@ class App:
 
         authorized_token = self.login.get_authorized_token(access_token)
 
+        User = self.create_user(authorized_token)
+
         authorized_client = self.login.get_authorized_client(consumer, authorized_token)
 
         return authorized_client
@@ -69,6 +72,14 @@ class App:
     def check_response_status(self, response):
         if self.login.get_response_status(response) != 200:
             self.view.display_message("An error occured")
+
+    def create_user(self, authorized_token):
+        first_name = view.get_user_input("First name --> ")
+        last_name = view.get_user_input ( "Last name --> " )
+        email = view.get_user_input ( "email --> " )
+
+        return User(first_name, last_name, email,
+                    authorized_token["oauth_token"], authorized_token["oauth_token_secret"])
 
 
 
