@@ -5,12 +5,16 @@ from view.view import View
 from controller.login import Login
 from enums.constants import Constants
 from model.user import User
+from model.database import Database
 
 
 class App:
 
     view = View()
     login = Login()
+
+    def initialize_database(self, **kwargs):
+        Database().initialize(**kwargs)
 
 
     def start_app(self):
@@ -51,9 +55,11 @@ class App:
 
         access_token = self.login.get_access_token(client)
 
-        authorized_token = self.login.get_authorized_token(access_token)
+        user = self.create_user(access_token)
 
-        User = self.create_user(authorized_token)
+        user.save_to_db()
+
+        authorized_token = self.login.get_authorized_token(access_token)
 
         authorized_client = self.login.get_authorized_client(consumer, authorized_token)
 
@@ -73,13 +79,13 @@ class App:
         if self.login.get_response_status(response) != 200:
             self.view.display_message("An error occured")
 
-    def create_user(self, authorized_token):
-        first_name = view.get_user_input("First name --> ")
-        last_name = view.get_user_input ( "Last name --> " )
-        email = view.get_user_input ( "email --> " )
+    def create_user(self, access_token):
+        first_name = self.view.get_user_input("First name --> ")
+        last_name = self.view.get_user_input ( "Last name --> " )
+        email = self.view.get_user_input ( "email --> " )
 
         return User(None, first_name, last_name, email,
-                    authorized_token["oauth_token"], authorized_token["oauth_token_secret"])
+                    access_token["oauth_token"], access_token["oauth_token_secret"])
 
 
 
