@@ -21,8 +21,10 @@ class User:
 
         with CursorFromConnectionFromPool() as cursor:
 
-                cursor.execute ( "INSERT INTO users (first_name, last_name, email) "
-                                 "VALUES (%s, %s, %s);", (self.first_name, self.last_name, self.email) )
+                cursor.execute ( "INSERT INTO users (first_name, last_name, "
+                                 "email, oauth_token, oauth_token_secret) "
+                                 "VALUES (%s, %s, %s, %s, %s);", (self.first_name, self.last_name,
+                                                          self.email, self.oauth_token, self.oauth_token_secret))
 
     @classmethod
     def load_from_db_by_email(cls, email):
