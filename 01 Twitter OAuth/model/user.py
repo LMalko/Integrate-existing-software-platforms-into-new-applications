@@ -4,11 +4,14 @@ from model.database import *
 
 class User:
 
-    def __init__(self, id, first_name, last_name, email):
+    def __init__(self, id, first_name, last_name, email,
+                 oauth_token, oauth_token_secret):
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
+        self.oauth_token = oauth_token
+        self.oauth_token_secret = oauth_token_secret
 
     def __repr__(self):
         return f"{self.first_name} {self.last_name} has id " \
