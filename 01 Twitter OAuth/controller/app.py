@@ -21,7 +21,6 @@ class App:
 
         authorized_client = self.authorize_client()
 
-
         # Make Twitter API calls.
         response, content = authorized_client.request(
             "https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi", "GET")
@@ -31,11 +30,7 @@ class App:
         # Convert bytes to string & display first. Then get string representation.
         tweets = json.loads(content.decode("utf-8"))
 
-        for tweet in tweets["statuses"]:
-            try:
-                print(tweet["text"])
-            except UnicodeEncodeError:
-                print(UnicodeEncodeError)
+        self.display_tweets(tweets)
 
 
     def authorize_client(self):
@@ -100,3 +95,14 @@ class App:
 
         return User(None, first_name, last_name, email,
                     access_token["oauth_token"], access_token["oauth_token_secret"])
+
+    @staticmethod
+    def display_tweets(tweets):
+
+        count = 1
+        for tweet in tweets["statuses"]:
+            try:
+                print(f"{'{:04d}'.format(count)}. {tweet['text']}")
+            except UnicodeEncodeError:
+                print(UnicodeEncodeError)
+            count += 1
