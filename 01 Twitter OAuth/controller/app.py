@@ -55,9 +55,15 @@ class App:
 
         access_token = self.login.get_access_token(client)
 
-        user = self.create_user(access_token)
+        user_email = self.view.get_user_input("Enter Your email address --> ")
 
-        user.save_to_db()
+        user = User.load_from_db_by_email(user_email)
+
+        if not user:
+
+            user = self.create_user(access_token)
+
+            user.save_to_db()
 
         authorized_token = self.login.get_authorized_token(access_token)
 
@@ -86,6 +92,3 @@ class App:
 
         return User(None, first_name, last_name, email,
                     access_token["oauth_token"], access_token["oauth_token_secret"])
-
-
-

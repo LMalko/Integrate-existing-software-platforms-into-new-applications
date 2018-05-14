@@ -13,6 +13,12 @@ class User:
         self.oauth_token = oauth_token
         self.oauth_token_secret = oauth_token_secret
 
+    def get_oauth_token(self):
+        return self.oauth_token
+    
+    def get_oauth_token_secret(self):
+        return self.oauth_token_secret
+
     def __repr__(self):
         return f"{self.first_name} {self.last_name} has id " \
                                         f"{self.id} & email {self.email}."
@@ -33,6 +39,7 @@ class User:
                 cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
 
                 user_data = cursor.fetchone()
-                return cls(id=user_data[0], first_name=user_data[1],
-                           last_name=user_data[2], email=user_data[3],
-                           oauth_token=user_data[4], oauth_token_secret=user_data[5])
+                if user_data is not None:
+                    return cls(id=user_data[0], first_name=user_data[1],
+                               last_name=user_data[2], email=user_data[3],
+                               oauth_token=user_data[4], oauth_token_secret=user_data[5])
