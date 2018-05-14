@@ -41,6 +41,18 @@ class App:
     def authorize_client(self):
         consumer = self.login.get_consumer()
 
+        access_token = self.get_access_token(consumer)
+
+        user = self.get_user(access_token)
+
+        authorized_token = self.login.get_authorized_token(access_token)
+
+        authorized_client = self.login.get_authorized_client(consumer, authorized_token)
+
+        return authorized_client
+
+    def get_access_token(self, consumer):
+
         client = self.login.get_client(consumer)
 
         response, content = self.login.get_request(client)
@@ -55,21 +67,7 @@ class App:
 
         access_token = self.login.get_access_token(client)
 
-        user_email = self.view.get_user_input("Enter Your email address --> ")
-
-        user = User.load_from_db_by_email(user_email)
-
-        if not user:
-
-            user = self.create_user(access_token)
-
-            user.save_to_db()
-
-        authorized_token = self.login.get_authorized_token(access_token)
-
-        authorized_client = self.login.get_authorized_client(consumer, authorized_token)
-
-        return authorized_client
+        return access_token
 
     def get_authorization_verifier(self, request_token):
         # Ask the user to authorize app and give the pin code.
@@ -85,10 +83,20 @@ class App:
         if self.login.get_response_status(response) != 200:
             self.view.display_message("An error occured")
 
-    def create_user(self, access_token):
+    def get_user(self, access_token):
+
+        user_email = self.view.get_user_input("Enter Your email address --> ")
+        user = User.load_from_db_by_email(user_email)
+
+        if not user:
+            user = self.create_user(user_email, access_token)
+            user.save_to_db ()
+
+        return user
+
+    def create_user(self, email, access_token):
         first_name = self.view.get_user_input("First name --> ")
         last_name = self.view.get_user_input ( "Last name --> " )
-        email = self.view.get_user_input ( "email --> " )
 
         return User(None, first_name, last_name, email,
                     access_token["oauth_token"], access_token["oauth_token_secret"])
