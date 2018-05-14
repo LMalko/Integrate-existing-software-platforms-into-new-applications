@@ -61,13 +61,13 @@ class Login:
         return access_token
 
     @staticmethod
-    def get_authorized_token(oauth_token, oauth_token_secret):
+    def get_authorized_token(access_token):
 
         # Create an 'authorized_token object and use that to
         # perform Twitter API calls
         # This authorized token will represent the user that authorized the application.
-        authorized_token = oauth2.Token(oauth_token,oauth_token_secret)
-
+        authorized_token = oauth2.Token(access_token['oauth_token'],
+                                        access_token['oauth_token_secret'])
         return authorized_token
 
     @staticmethod
