@@ -15,6 +15,8 @@ class App:
 
     def __init__(self):
         self.user_email = None
+        self.consumer = None
+        self.user = None
 
     @staticmethod
     def initialize_database(**kwargs):
@@ -23,27 +25,31 @@ class App:
 
     def start_app(self):
 
-        user = self.get_user()
+        self.user = self.get_user()
 
-        if user:
+        if self.user:
             pass
         else:
-            authorized_client = self.authorize_client()
+            access_token = self.get_access_token()
 
-            # Make Twitter API calls.
-            response, content = authorized_client.request(
-                "https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi", "GET")
+            self.create_user(access_token)
 
-            self.check_response_status(response)
+        authorized_client = self.get_authorized_client()
 
-            # Convert bytes to string & display first. Then get string representation.
-            tweets = json.loads(content.decode("utf-8"))
+        # Make Twitter API calls.
+        response, content = authorized_client.request(
+            "https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi", "GET")
 
-            for tweet in tweets["statuses"]:
-                try:
-                    print(tweet["text"])
-                except UnicodeEncodeError:
-                    print(UnicodeEncodeError)
+        self.check_response_status(response)
+
+        # Convert bytes to string & display first. Then get string representation.
+        tweets = json.loads(content.decode("utf-8"))
+
+        for tweet in tweets["statuses"]:
+            try:
+                print(tweet["text"])
+            except UnicodeEncodeError:
+                print(UnicodeEncodeError)
 
     def get_user(self):
 
@@ -53,10 +59,16 @@ class App:
 
         return user
 
-    def authorize_client(self):
-        consumer = self.login.get_consumer()
+    def create_user(self, access_token):
 
-        client = self.login.get_client(consumer)
+        self.user = self.create_user(access_token)
+
+        self.user.save_to_db()
+
+    def get_access_token(self):
+        self.consumer = self.login.get_consumer()
+
+        client = self.login.get_client(self.consumer)
 
         response, content = self.login.get_request(client)
 
@@ -66,19 +78,21 @@ class App:
 
         authorization_verifier = self.get_authorization_verifier(request_token)
 
-        client = self.login.get_verified_client(consumer, request_token, authorization_verifier)
+        client = self.login.get_verified_client(self.consumer, request_token, authorization_verifier)
 
         access_token = self.login.get_access_token(client)
 
-        user = self.create_user(access_token)
+        return access_token
 
-        user.save_to_db()
+    def get_authorized_client(self):
 
-        authorized_token = self.login.get_authorized_token(access_token)
+        authorized_token = self.login.get_authorized_token(self.user.get_oauth_token,
+                                                           self.user.get_oauth_token_secret)
 
-        authorized_client = self.login.get_authorized_client(consumer, authorized_token)
+        authorized_client = self.login.get_authorized_client(self.consumer, authorized_token)
 
         return authorized_client
+
 
     def get_authorization_verifier(self, request_token):
         # Ask the user to authorize app and give the pin code.
