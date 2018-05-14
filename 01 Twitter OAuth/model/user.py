@@ -13,6 +13,12 @@ class User:
         self.oauth_token = oauth_token
         self.oauth_token_secret = oauth_token_secret
 
+    def get_oauth_token(self):
+        return self.oauth_token
+    
+    def get_oauth_token_secret(self):
+        return self.oauth_token_secret
+
     def __repr__(self):
         return f"{self.first_name} {self.last_name} has id " \
                                         f"{self.id} & email {self.email}."
