@@ -13,30 +13,44 @@ class App:
     view = View()
     login = Login()
 
+    def __init__(self):
+        self.user_email = None
+
     def initialize_database(self, **kwargs):
         Database().initialize(**kwargs)
 
 
     def start_app(self):
 
-        authorized_client = self.authorize_client()
+        user = self.get_user()
 
+        if user:
+            pass
+        else:
+            authorized_client = self.authorize_client()
 
-        # Make Twitter API calls.
-        response, content = authorized_client.request(
-            "https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi", "GET")
+            # Make Twitter API calls.
+            response, content = authorized_client.request(
+                "https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi", "GET")
 
-        self.check_response_status(response)
+            self.check_response_status(response)
 
-        # Convert bytes to string & display first. Then get string representation.
-        tweets = json.loads(content.decode("utf-8"))
+            # Convert bytes to string & display first. Then get string representation.
+            tweets = json.loads(content.decode("utf-8"))
 
-        for tweet in tweets["statuses"]:
-            try:
-                print(tweet["text"])
-            except UnicodeEncodeError:
-                print(UnicodeEncodeError)
+            for tweet in tweets["statuses"]:
+                try:
+                    print(tweet["text"])
+                except UnicodeEncodeError:
+                    print(UnicodeEncodeError)
 
+    def get_user(self):
+
+        self.user_email = self.view.get_user_input("What is Your email?")
+
+        user = User.load_from_db_by_email(self.user_email)
+
+        return user
 
     def authorize_client(self):
         consumer = self.login.get_consumer()
@@ -82,9 +96,8 @@ class App:
     def create_user(self, access_token):
         first_name = self.view.get_user_input("First name --> ")
         last_name = self.view.get_user_input ( "Last name --> " )
-        email = self.view.get_user_input ( "email --> " )
 
-        return User(None, first_name, last_name, email,
+        return User(None, first_name, last_name, self.user_email,
                     access_token["oauth_token"], access_token["oauth_token_secret"])
 
 
