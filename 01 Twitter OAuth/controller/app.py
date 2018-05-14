@@ -16,7 +16,8 @@ class App:
     def __init__(self):
         self.user_email = None
 
-    def initialize_database(self, **kwargs):
+    @staticmethod
+    def initialize_database(**kwargs):
         Database().initialize(**kwargs)
 
 
