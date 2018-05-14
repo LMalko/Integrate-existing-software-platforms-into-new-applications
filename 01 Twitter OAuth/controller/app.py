@@ -13,27 +13,14 @@ class App:
     view = View()
     login = Login()
 
-    def __init__(self):
-        self.user_email = None
-        self.consumer = None
-        self.user = None
-
-    @staticmethod
-    def initialize_database(**kwargs):
+    def initialize_database(self, **kwargs):
         Database().initialize(**kwargs)
 
 
     def start_app(self):
 
-        self.user = self.get_user()
+        authorized_client = self.authorize_client()
 
-        if not self.user:
-            
-            access_token = self.get_access_token()
-
-            self.create_user(access_token)
-
-        authorized_client = self.get_authorized_client()
 
         # Make Twitter API calls.
         response, content = authorized_client.request(
@@ -50,24 +37,11 @@ class App:
             except UnicodeEncodeError:
                 print(UnicodeEncodeError)
 
-    def get_user(self):
 
-        self.user_email = self.view.get_user_input("What is Your email?")
+    def authorize_client(self):
+        consumer = self.login.get_consumer()
 
-        user = User.load_from_db_by_email(self.user_email)
-
-        return user
-
-    def create_user(self, access_token):
-
-        self.user = self.create_user(access_token)
-
-        self.user.save_to_db()
-
-    def get_access_token(self):
-        self.consumer = self.login.get_consumer()
-
-        client = self.login.get_client(self.consumer)
+        client = self.login.get_client(consumer)
 
         response, content = self.login.get_request(client)
 
@@ -77,21 +51,25 @@ class App:
 
         authorization_verifier = self.get_authorization_verifier(request_token)
 
-        client = self.login.get_verified_client(self.consumer, request_token, authorization_verifier)
+        client = self.login.get_verified_client(consumer, request_token, authorization_verifier)
 
         access_token = self.login.get_access_token(client)
 
-        return access_token
+        user_email = self.view.get_user_input("Enter Your email address --> ")
 
-    def get_authorized_client(self):
+        user = User.load_from_db_by_email(user_email)
 
-        authorized_token = self.login.get_authorized_token(self.user.get_oauth_token,
-                                                           self.user.get_oauth_token_secret)
+        if not user:
 
-        authorized_client = self.login.get_authorized_client(self.consumer, authorized_token)
+            user = self.create_user(access_token)
+
+            user.save_to_db()
+
+        authorized_token = self.login.get_authorized_token(access_token)
+
+        authorized_client = self.login.get_authorized_client(consumer, authorized_token)
 
         return authorized_client
-
 
     def get_authorization_verifier(self, request_token):
         # Ask the user to authorize app and give the pin code.
@@ -110,9 +88,7 @@ class App:
     def create_user(self, access_token):
         first_name = self.view.get_user_input("First name --> ")
         last_name = self.view.get_user_input ( "Last name --> " )
+        email = self.view.get_user_input ( "email --> " )
 
-        return User(None, first_name, last_name, self.user_email,
+        return User(None, first_name, last_name, email,
                     access_token["oauth_token"], access_token["oauth_token_secret"])
-
-
-
