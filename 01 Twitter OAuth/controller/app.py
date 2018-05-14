@@ -27,9 +27,8 @@ class App:
 
         self.user = self.get_user()
 
-        if self.user:
-            pass
-        else:
+        if not self.user:
+            
             access_token = self.get_access_token()
 
             self.create_user(access_token)
