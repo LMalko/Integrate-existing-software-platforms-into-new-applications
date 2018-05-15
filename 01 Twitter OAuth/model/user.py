@@ -15,7 +15,7 @@ class User:
 
     def get_oauth_token(self):
         return self.oauth_token
-    
+
     def get_oauth_token_secret(self):
         return self.oauth_token_secret
 
