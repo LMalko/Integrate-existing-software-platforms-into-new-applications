@@ -6,6 +6,7 @@ from controller.login import Login
 from enums.constants import Constants
 from model.user import User
 from model.database import Database
+from model.flask_operator import *
 
 
 class App:
