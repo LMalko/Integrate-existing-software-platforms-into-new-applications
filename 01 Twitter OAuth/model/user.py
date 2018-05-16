@@ -17,6 +17,9 @@ class User:
     def get_oauth_token_secret(self):
         return self.oauth_token_secret
 
+    def get_screen_name(self):
+        return self.screen_name
+
     def __repr__(self):
         return f"User: {self.screen_name}"
 
