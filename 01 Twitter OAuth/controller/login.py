@@ -12,9 +12,9 @@ class Login:
     consumer = oauth2.Consumer(Constants.CONSUMER_KEY.value,
                                         Constants.CONSUMER_SECRET.value)
 
-    @classmethod
-    def get_consumer(cls):
-        return cls.consumer
+    # @classmethod
+    # def get_consumer(cls):
+    #     return cls.consumer
 
     @classmethod
     def get_request_token(cls):
