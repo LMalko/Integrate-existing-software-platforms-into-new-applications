@@ -39,6 +39,6 @@ class User:
                 cursor.execute("SELECT * FROM users WHERE screen_name=%s", (screen_name,))
 
                 user_data = cursor.fetchone()
-                if user_data is not None:
+                if user_data:
                     return cls(id=user_data[0], screen_name=user_data[1],
                                oauth_token=user_data[2], oauth_token_secret=user_data[3])
