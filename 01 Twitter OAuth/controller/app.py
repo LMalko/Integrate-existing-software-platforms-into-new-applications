@@ -3,10 +3,9 @@ import json
 sys.path.append("..")
 from view.view import View
 from controller.login import Login
-from enums.constants import Constants
 from model.user import User
 from model.database import Database
-from model.flask_operator import *
+# from model.flask_operator import *
 
 
 class App:
@@ -36,27 +35,25 @@ class App:
 
 
     def authorize_client(self):
-        consumer = self.login.get_consumer()
-
-        access_token = self.get_access_token(consumer)
+        access_token = self.get_access_token()
 
         user = self.get_user(access_token)
 
         authorized_token = self.login.get_authorized_token(access_token)
 
+        consumer = self.login.get_consumer()
+
         authorized_client = self.login.get_authorized_client(consumer, authorized_token)
 
         return authorized_client
 
-    def get_access_token(self, consumer):
+    def get_access_token(self):
 
         self.request_token = self.login.get_request_token()
 
         authorization_verifier = self.get_authorization_verifier(self.request_token)
 
-        client = self.login.get_verified_client(consumer, self.request_token, authorization_verifier)
-
-        access_token = self.login.get_access_token(client)
+        access_token = self.login.get_access_token(self.request_token, authorization_verifier)
 
         return access_token
 
