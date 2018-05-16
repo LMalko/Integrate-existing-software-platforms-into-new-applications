@@ -35,12 +35,12 @@ class Login:
     @classmethod
     def get_access_token(cls, request_token, authorization_verifier):
 
-        token = oauth2.Token ( request_token['oauth_token'], request_token['oauth_token_secret'] )
+        token = oauth2.Token(request_token['oauth_token'], request_token['oauth_token_secret'] )
         token.set_verifier(authorization_verifier)
 
         client = oauth2.Client(cls.consumer, token)
         # Ask Twitter for an access token after the request token was verified.
-        response, content = client.request(Constants.ACCESS_TOKEN_URL, 'POST')
+        response, content = client.request(Constants.ACCESS_TOKEN_URL.value, 'POST')
         return dict(urlparse.parse_qsl(content.decode('utf-8')))
 
     @staticmethod
