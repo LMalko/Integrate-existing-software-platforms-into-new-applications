@@ -32,30 +32,16 @@ class Login:
     def get_auth_verifier_url(request_token):
         return f"{Constants.AUTHORIZATION_URL.value}?oauth_token={request_token['oauth_token']}"
 
-    @staticmethod
-    def get_verified_client(consumer, request_token, authorization_verifier):
+    @classmethod
+    def get_access_token(cls, request_token, authorization_verifier):
 
-        # Create a Token object which contains the request token,
-        # and the verifier.
-        token = oauth2.Token(request_token['oauth_token'],
-                             request_token['oauth_token_secret'])
-
+        token = oauth2.Token ( request_token['oauth_token'], request_token['oauth_token_secret'] )
         token.set_verifier(authorization_verifier)
 
-        # Create a client with the consumer (our app) and the newly
-        # created (and verified) token.
-        client = oauth2.Client(consumer, token)
-
-        return client
-
-    @staticmethod
-    def get_access_token(client):
-
+        client = oauth2.Client(cls.consumer, token)
         # Ask Twitter for an access token after the request token was verified.
-        response, content = client.request(Constants.ACCESS_TOKEN_URL.value, "POST")
-        access_token = dict(urlparse.parse_qsl(content.decode("utf-8")))
-
-        return access_token
+        response, content = client.request(Constants.ACCESS_TOKEN_URL, 'POST')
+        return dict(urlparse.parse_qsl(content.decode('utf-8')))
 
     @staticmethod
     def get_authorized_token(access_token):
