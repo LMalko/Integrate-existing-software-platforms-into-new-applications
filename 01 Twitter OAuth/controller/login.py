@@ -7,33 +7,30 @@ import urllib.parse as urlparse
 
 class Login:
 
-    @staticmethod
-    def get_consumer():
-        # Create a consumer, which uses CONSUMER_KEY and
-        # CONSUMER_SECRET to identify our app uniquely.
-        consumer = oauth2.Consumer(Constants.CONSUMER_KEY.value,
-                                          Constants.CONSUMER_SECRET.value)
-        return consumer
+    # Create a consumer, which uses CONSUMER_KEY and
+    # CONSUMER_SECRET to identify our app uniquely.
+    consumer = oauth2.Consumer(Constants.CONSUMER_KEY.value,
+                                        Constants.CONSUMER_SECRET.value)
 
-    @staticmethod
-    def get_client(consumer):
-        client = oauth2.Client(consumer)
-        return client
+    @classmethod
+    def get_consumer(cls):
+        return cls.consumer
 
-    @staticmethod
-    def get_request(client):
-        # Use the client to perform a request for the request token.
-        return client.request(Constants.REQUEST_TOKEN_URL.value, "POST" )
+    @classmethod
+    def get_request_token(cls):
+        client = oauth2.Client(cls.consumer)
 
-    @staticmethod
-    def get_response_status(response):
-        return response.status
+        response, content = client.request(Constants.REQUEST_TOKEN_URL.value, 'POST')
+        if response.status != 200:
+            print ( "An error occurred getting the request token from Twitter!" )
 
-    @staticmethod
-    def get_request_token(content):
         # Get the request token parsing the query string.
         request_token = dict(urlparse.parse_qsl(content.decode( "utf-8")))
         return request_token
+
+    @staticmethod
+    def get_auth_verifier_url(request_token):
+        return f"{Constants.AUTHORIZATION_URL.value}?oauth_token={request_token['oauth_token']}"
 
     @staticmethod
     def get_verified_client(consumer, request_token, authorization_verifier):
