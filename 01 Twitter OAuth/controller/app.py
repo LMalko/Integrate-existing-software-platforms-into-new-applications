@@ -1,17 +1,17 @@
 import sys
-import json
 sys.path.append("..")
-from view.view import View
-from controller.login import Login
-from model.user import User
+# import json
+# from view.view import View
+# from controller.login import Login
+# from model.user import User
 from model.database import Database
 from model.flask_operator import *
 
 
 class App:
 
-    view = View()
-    login = Login()
+    # view = View()
+    # login = Login()
 
     def __init__(self):
         self.request_token = None
