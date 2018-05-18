@@ -1,4 +1,5 @@
-from flask import Flask, render_template, session, redirect, request, url_for
+from flask import Flask, render_template, session, \
+    redirect, request, url_for,g
 # session dictionary will be persistent between requests
 import sys
 sys.path.append("..")
@@ -11,6 +12,13 @@ def initiate_flask_operator():
     login = Login()
     app = Flask(__name__)
     app.secret_key = "1234"
+
+    @app.before_request
+    def load_user():
+        # Check if there is key called 'screen_name'
+        if 'screen_name' in session:
+            g.user = User.load_from_db_by_screen_name(session['screen_name'])
+
 
     @app.route("/")
     def homage():
@@ -43,7 +51,9 @@ def initiate_flask_operator():
     @app.route("/profile")
     def profile():
         return render_template("profile.html",
-                               screen_name=session["screen_name"])
+                               user=g.user)
+
+
 
     # Callback URL in application settings would then be: http://127.0.0.1:4995/auth/twitter
     app.run(port=4995)
