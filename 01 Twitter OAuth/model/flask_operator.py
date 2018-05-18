@@ -25,6 +25,11 @@ def initiate_flask_operator():
     @app.route("/login/twitter")
     def twitter_login():
 
+        # If user logged in, redirect to profile.
+        if 'screen_name' in session:
+            return redirect(url_for("profile"))
+
+
         request_token = login.get_request_token()
         session['request_token'] = request_token
 
