@@ -1,6 +1,6 @@
 # 01. Twitter OAuth (Python 3.6.4., Flask, PostgreSQL, json, requests, oauth2)
 
-Twitter API console application.
+Twitter API console application. Search for tweets & analyze their sentiment.
 
 Ackowledgemens:
 -http://text-processing.com/docs/sentiment.html
