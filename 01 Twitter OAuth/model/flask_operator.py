@@ -1,4 +1,4 @@
-from flask import Flask, render_template, session, redirect, request
+from flask import Flask, render_template, session, redirect, request, url_for
 # session dictionary will be persistent between requests
 import sys
 sys.path.append("..")
@@ -38,7 +38,12 @@ def initiate_flask_operator():
 
         session['screen_name'] = user.get_screen_name()
 
-        return user.get_screen_name()
+        return redirect(url_for("profile"))
+
+    @app.route("/profile")
+    def profile():
+        return render_template("profile.html",
+                               screen_name=session["screen_name"])
 
     # Callback URL in application settings would then be: http://127.0.0.1:4995/auth/twitter
     app.run(port=4995)
