@@ -66,7 +66,7 @@ def initiate_flask_operator():
 
         tweet_texts = [tweet['text'] for tweet in tweets['statuses']]
 
-        return render_template("search.html", constent=tweet_texts)
+        return render_template("search.html", content=tweet_texts)
 
     # Callback URL in application settings would then be: http://127.0.0.1:4995/auth/twitter
     app.run(port=4995)
