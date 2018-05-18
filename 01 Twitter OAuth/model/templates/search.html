@@ -2,17 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../../bootstrap.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css')}}">
     <title>Search</title>
 </head>
 <body>
-
-            <ul>
+    <div class="container mt-3 mb-3">
+            <ul class="list-group">
                 {% for element in content %}
-                    <li> {{ element }} </li>
+                    <li class="list-group-item"> {{ element }} </li>
                 {% endfor %}
             </ul>
-
-
+    </div>
 </body>
 </html>
