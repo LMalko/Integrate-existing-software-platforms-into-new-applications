@@ -53,7 +53,10 @@ def initiate_flask_operator():
         return render_template("profile.html",
                                user=g.user)
 
-
+    @app.route("/logout")
+    def logout():
+        session.clear()
+        return redirect(url_for("homepage"))
 
     # Callback URL in application settings would then be: http://127.0.0.1:4995/auth/twitter
     app.run(port=4995)
