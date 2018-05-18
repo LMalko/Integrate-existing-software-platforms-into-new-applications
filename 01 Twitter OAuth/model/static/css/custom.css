@@ -2,17 +2,13 @@ body {
     background-color: black;
 }
 
-#landing-header {
-    /*We set the z-index to 1 so all of the elements inside the landing-header div
-        will be in front of the background images*/
-    z-index: 1;
-    /*The position is set to relative so we can use the z-index property;
-    the default position value is static, which ignores z-index*/
-    position: relative;
-
+.landing-header {
     text-align: center;
-    /*We use padding-top to vertically center our div, since it's contents take up quite a bit of
-    space we use 40vh (view height) instead of 50,
-    this way the content looks more visually centered*/
+    padding-top: 40vh;
+}
+
+.profilePage{
+    color: chartreuse;
+    text-align: center;
     padding-top: 40vh;
 }
