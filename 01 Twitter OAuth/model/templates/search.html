@@ -2,12 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../bootstrap.css">
     <title>Search</title>
 </head>
 <body>
 
-    {% for element in content %}
-        <p> {{ element }} </p>
-    {% endfor %}
+            <ul>
+                {% for element in content %}
+                    <li> {{ element }} </li>
+                {% endfor %}
+            </ul>
+
+
 </body>
 </html>
