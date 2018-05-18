@@ -1,6 +1,9 @@
 import sys
 sys.path.append("..")
 from model.database import *
+from controller.login import Login
+import oauth2
+import json
 
 class User:
 
@@ -27,7 +30,7 @@ class User:
 
         with CursorFromConnectionFromPool() as cursor:
 
-                cursor.execute ( "INSERT INTO users (screen_name, oauth_token, "
+                cursor.execute("INSERT INTO users (screen_name, oauth_token, "
                                                             "oauth_token_secret) "
                                  "VALUES (%s, %s, %s);", (self.screen_name,
                                                             self.oauth_token, self.oauth_token_secret))
@@ -42,3 +45,14 @@ class User:
                 if user_data:
                     return cls(id=user_data[0], screen_name=user_data[1],
                                oauth_token=user_data[2], oauth_token_secret=user_data[3])
+
+    def twitter_request(self, uri, verb='GET'):
+        authorized_token = oauth2.Token(self.oauth_token, self.oauth_token_secret)
+        authorized_client = oauth2.Client(Login.get_consumer(), authorized_token)
+
+        # Make Twitter API calls!
+        response, content = authorized_client.request ( uri, verb )
+        if response.status != 200:
+            print ( "An error occurred when searching!" )
+
+        return json.loads(content.decode('utf-8'))
