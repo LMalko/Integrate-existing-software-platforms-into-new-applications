@@ -3,7 +3,7 @@
 Twitter API console application.
 
 Ackowledgemens:
--http://text-processing.com/docs/sentiment.html
+- http://text-processing.com/docs/sentiment.html
 
 
 # 00. Clint Eastwood Web Scraping (Python 3.6.4., BeautifulSoup)
