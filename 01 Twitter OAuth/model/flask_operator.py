@@ -1,5 +1,4 @@
-from flask import Flask, render_template, session, \
-    redirect, request, url_for,g
+from flask import Flask, render_template, session, redirect, request, url_for,g
 # session dictionary will be persistent between requests
 import sys
 sys.path.append("..")
@@ -18,7 +17,6 @@ def initiate_flask_operator():
         # Check if there is key called 'screen_name'
         if 'screen_name' in session:
             g.user = User.load_from_db_by_screen_name(session['screen_name'])
-
 
     @app.route("/")
     def homage():
@@ -50,8 +48,7 @@ def initiate_flask_operator():
 
     @app.route("/profile")
     def profile():
-        return render_template("profile.html",
-                               user=g.user)
+        return render_template("profile.html", user=g.user)
 
     @app.route("/logout")
     def logout():
