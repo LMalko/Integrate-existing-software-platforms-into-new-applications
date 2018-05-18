@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
     <title>Home</title>
 </head>
 <body>
-<h1>Home</h1>
 
-<a href="{{ url_for('twitter_login')}}">Log in with Twitter</a>
-
+<div id="landing-header">
+        <a href="{{ url_for('twitter_login')}}" class="btn btn-success btn-lg active"
+           role="button" aria-pressed="true">Log in with Twitter</a>
+</div>
 </body>
 </html>

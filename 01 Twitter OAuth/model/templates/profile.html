@@ -3,20 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
     <title>Profile</title>
 </head>
 <body>
 
-<!--Flask only brackets-->
-{{user.get_screen_name()}}
 
-<form action="{{ url_for('search')}}" class="form-inline">
-  <label class="sr-only" for="query">Name</label>
-  <input type="text" class="form-control mb-2 mr-sm-2"
-         id="query" name="q" placeholder="Search....">
+    <div class="mx-auto" id="profilePageText">
 
-  <button type="submit" class="btn btn-primary mb-2">Submit</button>
-</form>
+                        <!--Flask only brackets-->
+                        <h2>User screen_name: {{user.get_screen_name()}}</h2>
+
+    </div>
+
+    <div class="mx-auto" id="profilePageForm">
+
+
+                <form action="{{ url_for('search')}}" class="form-inline">
+                  <label class="sr-only" for="query">Name</label>
+                  <input type="text" class="form-control mb-2 mr-sm-2"
+                         id="query" name="q" placeholder="Search....">
+
+                  <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                </form>
+
+    </div>
+
 
 </body>
 </html>
