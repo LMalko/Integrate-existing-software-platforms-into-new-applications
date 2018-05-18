@@ -60,5 +60,13 @@ def initiate_flask_operator():
         session.clear()
         return redirect(url_for("homepage"))
 
+    @app.route("/search")
+    def search():
+        tweets = g.user.twitter_request("https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi")
+
+        tweet_texts = [tweet['text'] for tweet in tweets['statuses']]
+
+        return render_template("search.html", constent=tweet_texts)
+
     # Callback URL in application settings would then be: http://127.0.0.1:4995/auth/twitter
     app.run(port=4995)
