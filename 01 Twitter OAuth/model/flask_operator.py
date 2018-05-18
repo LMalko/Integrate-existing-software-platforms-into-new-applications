@@ -62,7 +62,8 @@ def initiate_flask_operator():
 
     @app.route("/search")
     def search():
-        tweets = g.user.twitter_request("https://api.twitter.com/1.1/search/tweets.json?q=barcelona+messi")
+        query = request.args.get('q')
+        tweets = g.user.twitter_request(f"https://api.twitter.com/1.1/search/tweets.json?q={query}")
 
         tweet_texts = [tweet['text'] for tweet in tweets['statuses']]
 
