@@ -6,7 +6,8 @@
 </head>
 <body>
 
-{{ content }}
-
+    {% for element in content %}
+        <p> {{ element }} </p>
+    {% endfor %}
 </body>
 </html>
