@@ -60,7 +60,7 @@ class AppController:
         return Movie(title, character, category, release_year)
 
     def _set_actors_name(self, soup):
-        self.actors_name = soup.findAll("span", itemprop="name")
+        self.actors_name = soup.findAll("span", "itemprop")
         return self.actors_name[0].text
 
     def get_actors_name(self):
