@@ -5,6 +5,9 @@ sys.path.append("..")
 from controller.login import Login
 from model.user import User
 
+# This is sth else than request.args
+import requests
+
 
 def initiate_flask_operator():
 
@@ -65,7 +68,12 @@ def initiate_flask_operator():
         query = request.args.get('q')
         tweets = g.user.twitter_request(f"https://api.twitter.com/1.1/search/tweets.json?q={query}")
 
-        tweet_texts = [tweet['text'] for tweet in tweets['statuses']]
+        tweet_texts = [{"tweet": tweet['text'], "label": "neutral"} for tweet in tweets['statuses']]
+
+        for tweet in tweet_texts:
+            r = requests.post("http://text-processing.com/api/sentiment/", data={"text": tweet["tweet"]})
+            json_response = r.json()
+            tweet["label"] = json_response["label"]
 
         return render_template("search.html", content=tweet_texts)
 

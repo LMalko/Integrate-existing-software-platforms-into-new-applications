@@ -42,18 +42,3 @@ class Login:
         # Ask Twitter for an access token after the request token was verified.
         response, content = client.request(Constants.ACCESS_TOKEN_URL.value, 'POST')
         return dict(urlparse.parse_qsl(content.decode('utf-8')))
-
-    @staticmethod
-    def get_authorized_token(access_token):
-
-        # Create an 'authorized_token object and use that to
-        # perform Twitter API calls
-        # This authorized token will represent the user that authorized the application.
-        authorized_token = oauth2.Token(access_token['oauth_token'],
-                                        access_token['oauth_token_secret'])
-        return authorized_token
-
-    @staticmethod
-    def get_authorized_client(consumer, authorized_token):
-        authorized_client = oauth2.Client(consumer, authorized_token)
-        return authorized_client

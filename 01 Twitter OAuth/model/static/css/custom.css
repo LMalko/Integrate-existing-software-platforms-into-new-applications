@@ -1,0 +1,19 @@
+body {
+    background-color: navy;
+}
+
+#landing-header {
+    text-align: center;
+    padding-top: 40vh;
+}
+
+#profilePageText{
+    color: chartreuse;
+    padding-top: 40vh;
+    text-align: center;
+    width: 800px;
+}
+
+#profilePageForm{
+    width: 300px;
+}

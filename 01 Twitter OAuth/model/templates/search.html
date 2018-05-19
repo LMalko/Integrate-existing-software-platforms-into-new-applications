@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
     <title>Search</title>
 </head>
 <body>
     <div class="container mt-3 mb-3">
             <ul class="list-group">
+                {% set colour_class = 'list-group-item-info' %}
+
                 {% for element in content %}
-                    <li class="list-group-item"> {{ element }} </li>
+                    {% if element['label'] == 'pos' %}
+                        {% set colour_class = 'list-group-item-success' %}
+                    {% elif element['label'] == 'neg' %}
+                        {% set colour_class = 'list-group-item-danger' %}
+                    {% endif %}
+
+                    <li class="list-group-item {{ colour_class }}"> {{ element["tweet"] }} </li>
+
                 {% endfor %}
             </ul>
     </div>
